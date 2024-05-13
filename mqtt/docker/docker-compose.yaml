@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mosquitto:
+    container_name: gare9-broker
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
