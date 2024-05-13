@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout,
                                QHBoxLayout, QWidget, QPushButton,
                                QProgressBar, QLabel)
 from PySide6.QtCore import QTimer, QThread, Signal
+from PySide6.QtGui import QIcon
 import pyqtgraph as pg
 from qt_material import apply_stylesheet
 
@@ -61,7 +62,8 @@ class MQTTThread(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-                
+        self.setWindowIcon(QIcon('kars.png'))       
+        self.setWindowTitle("MQTT Subscriber Plotter") 
         # Widgets
         self.graphWidget1 = pg.PlotWidget()
         self.graphWidget2 = pg.PlotWidget()
