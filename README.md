@@ -8,9 +8,14 @@ Then activate the environment (command different based on terminal type)
 ```bash
 env\Scripts\activate
 ```
-or in a unix shell
+or in a unix shell in Windows
 ```bash
 source env/Scripts/activate
+```
+
+or on Mac/Linux
+```bash
+source env/bin/activate
 ```
 
 
