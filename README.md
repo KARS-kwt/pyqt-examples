@@ -35,11 +35,14 @@ Qt GUI (Using PySide or PyQt) is a very useful tool to get quick GUIs setup to i
 | 3       | MQTT Connection Plotter   |  ✅  |
 | 4       | OpenCV    | ✅ | 
 
+## Example 3 - MQTT Gui Example
+![](PySide6-MQTT-Example.gif)
 
-## MQTT
+### MQTT
 Before using the mqtt pub/sub examples. A broker needs to be available. You can use online free brokers such as `broker.emqx.io` or run your own.
 
 A simple mosquitto broker is available via docker container. cd to `mqtt/docker` and run
 ```
 docker compose up
 ```
+
