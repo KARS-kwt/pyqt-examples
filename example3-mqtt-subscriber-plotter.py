@@ -8,11 +8,16 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout,
 from PySide6.QtCore import QTimer, QThread, Signal
 import pyqtgraph as pg
 from qt_material import apply_stylesheet
+
+# mqtt settings
 broker = 'localhost'
 port = 1883
 topic = "python/mqtt"
 client_id = f'subscribe-{random.randint(0, 100)}'
 
+"""
+    Use QThread to run MQTT client in the background, and allow gui to refresh without blocking
+"""
 class MQTTThread(QThread):
     data_received = Signal(dict)
     
@@ -71,6 +76,8 @@ class MainWindow(QMainWindow):
         top_layout = QHBoxLayout()
         top_layout.addLayout(battery_layout)
         top_layout.addLayout(op_mode_layout)
+        top_layout.setStretch(0, 1)
+        top_layout.setStretch(1, 1)
         self.layout.addLayout(top_layout)
         self.layout.addWidget(self.graphWidget1)
         self.layout.addWidget(self.graphWidget2)
@@ -78,10 +85,7 @@ class MainWindow(QMainWindow):
         self.widget = QWidget()
         self.widget.setLayout(self.layout)
         self.setCentralWidget(self.widget)
-        
-        self.graphWidget1.setBackground('w')
-        self.graphWidget2.setBackground('w')
-        
+                
         # Data
         self.start_time = None
         self.time = []
@@ -90,11 +94,20 @@ class MainWindow(QMainWindow):
         self.position_x = []
         self.position_y = []
     
-        pen = pg.mkPen(color=(255, 0, 0))
-        pen2 = pg.mkPen(color=(0, 255, 0))
-        self.data_line_velx = self.graphWidget1.plot(self.time, self.velocity_x, pen=pen)
-        self.data_line_vely = self.graphWidget1.plot(self.time, self.velocity_y, pen=pen2)
-        self.data_line_pos = self.graphWidget2.plot(self.position_x, self.position_y, pen=pen)
+        pen_red = pg.mkPen(color=(255, 0, 0), width=3)
+        pen_green = pg.mkPen(color=(0, 255, 0), width=3)
+        self.data_line_velx = self.graphWidget1.plot(self.time, self.velocity_x, pen=pen_red)
+        self.data_line_vely = self.graphWidget1.plot(self.time, self.velocity_y, pen=pen_green)
+        self.graphWidget1.setYRange(-2, 2)
+        
+        pen_yellow = pg.mkPen(color=(255,255,51), width=3)
+        self.data_line_pos = self.graphWidget2.plot(self.position_x, self.position_y, pen=pen_yellow)
+        self.pos_end = pg.ScatterPlotItem(size=10, pen=pg.mkPen(None), brush=pg.mkBrush(255, 255, 255))
+        self.graphWidget2.addItem(self.pos_end)
+        self.graphWidget2.setXRange(-2, 2)
+        self.graphWidget2.setYRange(-2, 2)
+        self.graphWidget2.setAspectLocked(True, ratio=1)
+
         
         self.mqtt_thread = MQTTThread(client_id, broker, port, topic)
         self.mqtt_thread.data_received.connect(self.update_data)
@@ -148,6 +161,7 @@ class MainWindow(QMainWindow):
         self.data_line_velx.setData(self.time, self.velocity_x)
         self.data_line_vely.setData(self.time, self.velocity_y)
         self.data_line_pos.setData(self.position_x, self.position_y)
+        self.pos_end.setData([self.position_x[-1]], [self.position_y[-1]])
         
         self.battery_widget.setValue(data.get("battery", 80))
         
