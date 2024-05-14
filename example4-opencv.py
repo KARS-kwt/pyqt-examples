@@ -17,7 +17,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(0) # or /dev/video0 for linux, or 1 for Mac
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         
@@ -72,4 +72,4 @@ class MainWindow(QWidget):
 app = QApplication(sys.argv)
 main = MainWindow()
 main.show()
-sys.exit(app.exec_())
+sys.exit(app.exec())

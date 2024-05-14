@@ -5,7 +5,8 @@ import json
 from paho.mqtt import client as mqtt_client
 
 
-broker = 'localhost'
+# broker = 'localhost'
+broker = '192.168.0.221'
 port = 1883
 topic = "python/mqtt"
 # Generate a Client ID with the publish prefix.
