@@ -34,6 +34,7 @@ Qt GUI (Using PySide or PyQt) is a very useful tool to get quick GUIs setup to i
 | 2       | Serial Connection Plotter |  To Be Tested  | 
 | 3       | MQTT Connection Plotter   |  ✅  |
 | 4       | OpenCV    | ✅ | 
+| 5       | Joystick (pygame)    | ✅ | 
 
 ## Example 3 - MQTT Gui Example
 ![](PySide6-MQTT-Example.gif)
